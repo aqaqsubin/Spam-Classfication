@@ -1,5 +1,7 @@
 # **SMS Spam Classfication**
 
+AIVLE School 4차 미니프로젝트 스팸메일 분류   
+
 ### **파일 구조**
 
 ```bash
@@ -73,3 +75,8 @@ python main.py --user_input --data_dir data/revised --model_type electra --max_l
 <br>
 
 
+### **리더보드 결과**
+
+144팀 중 2등 달성 
+
+![리더보드](img/board.png)
