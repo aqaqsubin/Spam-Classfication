@@ -1,4 +1,4 @@
-# **Hate-Speech Detection in Daily Dialogue**
+# **SMS Spam Classfication**
 
 ### **파일 구조**
 
@@ -20,7 +20,7 @@
 
 <br>
 
-## **Building Hate-Speech Detection Dataset** 
+## **Building Dataset** 
 
 
 ```bash
@@ -36,7 +36,7 @@ python build_dataset.py --preprocessing --split --data_dir ../data --result_dir 
 
 ---
 
-## **Training/Testing Hate-Speech Detection Model** 
+## **Training/Testing Classification Model** 
 
 <br>
 
