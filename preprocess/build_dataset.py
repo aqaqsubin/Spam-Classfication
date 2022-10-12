@@ -20,13 +20,9 @@ if __name__=="__main__":
                         default=False,
                         help='build test dataset')
 
-    parser.add_argument('--data_path',
+    parser.add_argument('--data_dir',
                         type=str,
-                        default='../data/data.csv')
-    
-    parser.add_argument('--tgt_path',
-                        type=str,
-                        default='../data/proc_data.csv')
+                        default='../data')
 
     parser.add_argument('--save_dir',
                         type=str,
@@ -35,14 +31,14 @@ if __name__=="__main__":
     
     args = parser.parse_args()
     
-    # make result directory
-    mkdir_p(args.result_dir)
+    # make save directory
+    mkdir_p(args.save_dir)
 
-    data = pd.read_csv(args.data_path).dropna(axis=0)
+    data = pd.read_csv(pjoin(args.data_dir, "spam.csv")).dropna(axis=0)
     data.drop_duplicates(subset=['text'], inplace=True)
     
     data = processing(args, data)
-    data.to_csv(args.tgt_path, index=False)
+    data.to_csv(pjoin(args.data_dir, "proc_data.csv"), index=False)
     
     if args.split:
         split_dataset(args, data)

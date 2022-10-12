@@ -64,26 +64,27 @@ def del_duplicated_space(text : str):
     return re.sub('[\s]+', ' ', text)
 
 def preprocess(text : str):
-    proc_txt = del_url(text)
-    proc_txt = del_newline(proc_txt)
+    # proc_txt = del_url(text)
+    proc_txt = del_newline(text)
+    proc_txt = del_http(proc_txt)
     
-    # proc_txt = del_http(proc_txt)
     proc_txt = del_special_char(proc_txt)
     proc_txt = repeat_normalize(proc_txt, num_repeats=3)
     
     proc_txt = del_duplicated_space(proc_txt)
-    return proc_txt.strip()
+    return text.strip()
 
-def processing(args, data):
+def processing(args, data, is_test=False):
     base_setting(args)
 
     # seed 고정
     random.seed(args.seed)
     np.random.seed(args.seed)
     
-    # labeling
-    labels = ['spam', 'ham']
-    data['label'] = list(map(lambda x: labels.index(x), data['label']))
+    if not is_test:
+        # labeling
+        labels = ['spam', 'ham']
+        data['label'] = list(map(lambda x: labels.index(x), data['label']))
     
     # text processing
     data['proc_text'] = list(map(preprocess, data['text']))

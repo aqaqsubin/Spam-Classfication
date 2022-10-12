@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 import re
 import torch
@@ -30,6 +29,7 @@ def predict(args, model, tokenizer, device, test_data):
     with torch.no_grad():
         for row in test_data.iterrows():
             proc_text = row[1]['proc_text']
+            proc_text = ' ' if proc_text != str(proc_text) else proc_text
             
             # encoding user input
             input_ids, attention_mask = encode(tokenizer.cls_token \
@@ -99,8 +99,6 @@ def evaluation(args, **kwargs):
 
     # load test dataset
     test_data = pd.read_csv(pjoin(args.data_dir, 'test.csv'))
-    test_data = test_data.dropna(axis=0)
-
     if args.pred:
         predict(args, model, model.tokenizer, device, test_data)
     else:
