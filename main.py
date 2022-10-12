@@ -92,7 +92,7 @@ if __name__ == "__main__":
             dirpath='model_ckpt',
             filename='{epoch:02d}-{avg_val_acc:.2f}',
             verbose=True,
-            save_last=True,
+            save_last=False,
             monitor='avg_val_acc',
             mode='max',
             prefix=f'{args.model_name}'
