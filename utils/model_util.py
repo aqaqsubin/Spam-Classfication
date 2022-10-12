@@ -1,4 +1,4 @@
-from tokenization_kobert import KoBertTokenizer
+from .tokenization_kobert import KoBertTokenizer
 from transformers import (ElectraForSequenceClassification, ElectraTokenizer, ElectraConfig,
                         BertForSequenceClassification, BertConfig,
                         AutoModelForSequenceClassification, AutoTokenizer, AutoConfig)

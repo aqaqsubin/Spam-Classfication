@@ -42,10 +42,10 @@ if __name__ == "__main__":
                         default=False,
                         help='for training')
 
-    parser.add_argument('--user_input',
+    parser.add_argument('--pred',
                         action='store_true',
                         default=False,
-                        help='if True, test on user inputs')
+                        help='if True, predict on the test dataset')
 
     parser.add_argument('--data_dir',
                         type=str,

@@ -11,17 +11,11 @@ warnings.filterwarnings(action='ignore')
 Description
 -----------
 전처리에 필요한 파라미터 지정
-
-    args.balanced: True일 때 get_balanced_dataset를 통한 분할,\
-         False일 때 분할 비율에 따라 랜덤하게 분할
-
     args.use_test: 테스트 데이터 구축 여부, False일 때 test data는 빈 값 저장
     args.test_ratio: 테스트 데이터 비율
     args.seed: random seed 고정 (19로 고정)
 '''
 def base_setting(args):
-    args.balanced = getattr(args, 'balanced', True)
-    args.use_test = getattr(args, 'use_test', True)
     args.test_ratio = getattr(args, 'test_ratio', 0.2)
     args.seed = getattr(args, 'seed', 19)
 
@@ -93,7 +87,6 @@ def processing(args, data):
     
     # text processing
     data['proc_text'] = list(map(preprocess, data['text']))
-    data.to_csv(pjoin(args.data_dir, 'proc_data.csv'), index=False)
     return data
 
 
@@ -125,8 +118,8 @@ def get_balanced_dataset(data : pd.DataFrame, test_ratio : float, use_test : boo
                 # class 내 데이터가 3-4개 인 경우
                 num_valid = num_test = int(len(sub_data)/ 3)
 
-        valid_idx = 2 * num_valid if use_test else num_valid
         test_idx = num_test if use_test else 0
+        valid_idx = 2 * num_valid if use_test else num_valid
 
         test = pd.concat([test, sub_data.iloc[:test_idx]], ignore_index=True)
         valid = pd.concat([valid, sub_data.iloc[test_idx:valid_idx]], ignore_index=True)
@@ -139,22 +132,11 @@ def get_balanced_dataset(data : pd.DataFrame, test_ratio : float, use_test : boo
 '''
 Description
 -----------
-전체 데이터를 train, valid, test로 분할하여 args.result_dir 내에 저장
+전체 데이터를 train, valid, test로 분할하여 args.save_dir 내에 저장
 '''
 def split_dataset(args, data):
-    if args.balanced:
-        train, test, valid = get_balanced_dataset(data=data, test_ratio=args.test_ratio, \
-            use_test=args.use_test)
-    else:
-        data = data.sample(frac=1, random_state=args.seed)
-        num_test = int(len(data) * args.test_ratio)
-
-        valid_idx = 2 * num_valid if use_test else num_valid
-        test_idx = num_test if use_test else 0
-
-        test = data.iloc[:test_idx]
-        valid = data.iloc[test_idx:valid_idx]
-        train = data.iloc[valid_idx:]
+    train, test, valid = get_balanced_dataset(data=data, test_ratio=args.test_ratio, \
+        use_test=args.use_test)
 
     print(f"Train Distribution : \n{train.label.value_counts()}")
     print(f"Valid Distribution : \n{valid.label.value_counts()}")
@@ -164,9 +146,9 @@ def split_dataset(args, data):
     valid = valid.sample(frac=1).reset_index(drop=True)
     test = test.sample(frac=1).reset_index(drop=True)
 
-    valid.to_csv(pjoin(args.result_dir, 'valid.csv'), index=False)
-    test.to_csv(pjoin(args.result_dir, 'test.csv'), index=False)
-    train.to_csv(pjoin(args.result_dir, 'train.csv'), index=False)
+    valid.to_csv(pjoin(args.save_dir, 'valid.csv'), index=False)
+    test.to_csv(pjoin(args.save_dir, 'test.csv'), index=False)
+    train.to_csv(pjoin(args.save_dir, 'train.csv'), index=False)
 
     print(f"Total Number of Data : {len(data)} -> {len(valid) + len(test) + len(train)}")
     return
