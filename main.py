@@ -62,7 +62,7 @@ if __name__ == "__main__":
     parser.add_argument('--model_type',
                         type=str,
                         required=True,
-                        choices=['bert', 'electra', 'bigbird', 'roberta'])
+                        choices=['bert', 'electra', 'bigbird', 'roberta', 't5'])
 
     parser.add_argument('--num_labels',
                         type=int,

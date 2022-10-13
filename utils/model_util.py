@@ -1,7 +1,8 @@
 from .tokenization_kobert import KoBertTokenizer
 from transformers import (ElectraForSequenceClassification, ElectraTokenizer, ElectraConfig,
                         BertForSequenceClassification, BertConfig,
-                        AutoModelForSequenceClassification, AutoTokenizer, AutoConfig)
+                        AutoModelForSequenceClassification, AutoTokenizer, AutoConfig,
+                        T5TokenizerFast, T5ForConditionalGeneration)
 
 '''
 Description
@@ -11,7 +12,7 @@ Description
 Input:
 ------
     model_type: 모델 유형 
-    ('bert', 'electra', 'bigbird' and 'roberta')
+    ('bert', 'electra', 'bigbird' and 'roberta', 't5')
 '''
 def load_model(model_type, num_labels=0, labels=None, cache_dir='./cache'):
     if labels is None:
@@ -76,5 +77,21 @@ def load_model(model_type, num_labels=0, labels=None, cache_dir='./cache'):
         )
         tokenizer = AutoTokenizer.from_pretrained("monologg/kobigbird-bert-base")
         return model, tokenizer
-  
+
+    elif 't5' == model_type:
+        config = AutoConfig.from_pretrained(
+            "paust/pko-t5-base",
+            num_labels=num_labels,
+            cache_dir=cache_dir
+        )
+        config.label2id = {str(i): label for i, label in enumerate(labels)}
+        config.id2label = {label: i for i, label in enumerate(labels)}
+        model = T5ForConditionalGeneration.from_pretrained(
+            'paust/pko-t5-base',
+            config=config)
+        
+        tokenizer = T5TokenizerFast.from_pretrained('paust/pko-t5-base')
+        return model, tokenizer
+
+
     raise NotImplementedError('Unknown model')
