@@ -1,6 +1,7 @@
 # **SMS Spam Classfication**
 
-AIVLE School 4차 미니프로젝트 스팸메일 분류   
+Kaggle Aivle School 4th MiniProject-Spam Filtering Competition 2등
+
 
 ### **파일 구조**
 
